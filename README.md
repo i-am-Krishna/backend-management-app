@@ -95,24 +95,24 @@ SALT = "your salt number"
 
 # 6 Project Structure
 
-   /backend-management-app
-├── /node_modules         # Installed dependencies
-├── /controllers          # Route controller functions
-│   └── user.controller.js
-│   └── task.controller.js
-├── /middlewares          # Custom middlewares (e.g., authentication, validation)
-│   └── auth.js
-│   └── hashedPassword.js
-├── /models               # Mongoose schema models
-│   └── user.model.js
-│   └── task.model.js
-├── /routes               # Route files
-│   └── userRoutes.js
-│   └── taskRoutes.js
-├── app.js                # Main server file
-├── package.json          # NPM package file
-├── .env                  # Environment variables file
-└── README.md             # Documentation
+  - /backend-management-app
+-   ├── /node_modules         # Installed dependencies
+-   ├── /controllers          # Route controller functions
+-   │   └── user.controller.js
+-   │   └── task.controller.js
+-   ├── /middlewares          # Custom middlewares (e.g., authentication, validation)
+-   │   └── auth.js
+-   │   └── hashedPassword.js
+-   ├── /models               # Mongoose schema models
+-   │   └── user.model.js
+-   │   └── task.model.js
+-   ├── /routes               # Route files
+-   │   └── userRoutes.js
+-   │   └── taskRoutes.js
+-   ├── app.js                # Main server file
+-   ├── package.json          # NPM package file
+-   ├── .env                  # Environment variables file
+-   └── README.md             # Documentation
 
 
 
