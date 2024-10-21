@@ -33,7 +33,7 @@ app.use("/api/v1/task", taskRouter); // Routes for task-related actions
 
 // Handling 404 errors (Route not found)
 app.use((req, res, next) => {
-  res.status(404).json({ error: 'Route not found' }); // Respond with a 404 error if no routes match
+  res.status(404).json({ error: 'Route not exists' }); // Respond with a 404 error if no routes match
 });
 
 // Exporting the app for use in other files

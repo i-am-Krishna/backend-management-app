@@ -35,62 +35,62 @@ This is a **Task Management System** built using **Node.js**, **Express**, and *
 
  # 1. Clone the repository:
 
-   git clone https://github.com/your-username/task-management-system.git
+ - git clone https://github.com/your-username/task-management-system.git
 
 
  # 2. Install dependencies:
    
-   cd task-management-system
+ - cd task-management-system
    npm install
 
 
 # 3. Create a .env file in the root directory and configure the following environment variables:
 
-PORT = 3000
-MONGO_DB_URL = "your mongodb url"
-DATABASE_NAME = "your database name"
-MIGRATION_DB = "your migration mongodb url"
-JWT_SECRET = "jwt secret key"
-EXPIRES_IN = "expiry date"
-SALT = "your salt number"
+- PORT = 3000
+- MONGO_DB_URL = "your mongodb url"
+- DATABASE_NAME = "your database name"
+- MIGRATION_DB = "your migration mongodb url"
+- JWT_SECRET = "jwt secret key"
+- EXPIRES_IN = "expiry date"
+- SALT = "your salt number"
 
 
 # 4. Run the server:
 
-   node --watch src/server.js
+ - node --watch src/server.js
 
 
 # 5. API Endpoints 
 
   # Hello world
-  GET / Get "Hello world" from base URL
+  - GET / Get "Hello world" from base URL
 
    
   # User Endpoints
-   Method	Endpoint	Description
-   POST	/api/users/signup	Register a new user
-   POST	/api/users/login	Login with email and password
-   GET	/api/users/:id	Get user details by ID Required
-   PUT	/api/users/edit	Edit user profile and password Required
-   GET	/api/users	Get all registered users (email, ID) Required
-   POST	/api/users/logout	Logout user and clear cookies Required
+   - Method	Endpoint	Description
+   - POST	/api/users/signup	Register a new user
+   - POST	/api/users/login	Login with email and password
+   - GET	/api/users/:id	Get user details by ID Required
+   - PUT	/api/users/edit	Edit user profile and password Required
+   - GET	/api/users	Get all registered users (email, ID) Required
+   - POST	/api/users/logout	Logout user and clear cookies Required
    
 
    # Task Endpoints        
-   GET	/tasks	Fetch all tasks	Required
-   GET	/tasks/count	Get task counts	Required
-   GET	/tasks/:id	Get a task by its ID	Not Required
-   POST	/tasks	Add a new task	Required
-   POST	/tasks/assign-all/:id	Assign all tasks to a specific user	Required
-   PATCH	/tasks/:id	Update task status	Required
-   PATCH	/tasks/update/:taskId	Update a task	Required
-   PATCH	/tasks/:taskId/:subtaskId	Update a checklist item	Required
-   DELETE	/tasks/:id	Delete a task	Required
-   DELETE	/tasks/:taskId/:subtaskId	Delete a subtask	Required
-   Feel free to modify any descriptions or details as needed!
-
+   - GET	/tasks	Fetch all tasks	Required
+   - GET	/tasks/count	Get task counts	Required
+   - GET	/tasks/:id	Get a task by its ID	Not Required
+   - POST	/tasks	Add a new task	Required
+   - POST	/tasks/assign-all/:id	Assign all tasks to a specific user	Required
+   - PATCH	/tasks/:id	Update task status	Required
+   - PATCH	/tasks/update/:taskId	Update a task	Required
+   - PATCH	/tasks/:taskId/:subtaskId	Update a checklist item	Required
+   - DELETE	/tasks/:id	Delete a task	Required
+   - DELETE	/tasks/:taskId/:subtaskId	Delete a subtask	Required
+   - Feel free to modify any descriptions or details as needed!
+- 
   # Not Found
-    Route not found
+   - Route not found (I am added a router if user gone not defined route then it shows route not exits)
 
 
 # 6 Project Structure
