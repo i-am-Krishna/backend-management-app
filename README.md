@@ -124,7 +124,7 @@ validation.js: Middleware for validating request bodies using express-validator.
 
 
 # 8 Error Handling
-404 Route Not Found: If the requested route does not exist, the server responds with a 404 Not Found error.
+- 404 Route Not Found: If the requested route does not exist, the server responds with a 404 Not Found error.
 500 Internal Server Error: General error handler for unhandled exceptions.
 403 Forbidden: Access denied errors for unauthorized actions.
 
