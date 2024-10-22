@@ -1,10 +1,10 @@
 
 const { validationResult } = require('express-validator');
-const TaskModel = require('../models/taskmodel.js');
-const UserModel = require('../models/usermodel.js');
+const TaskModel = require('../models/task.model.js');
+const UserModel = require('../models/user.model.js');
 const { formatDueDate } = require('../helpers/formatDueDate.js');
 const { getDateFilterRange } = require('../helpers/filterDates.js');
-const { STATUS_CODES, MESSAGES, VALID_STATUSES } = require('../constants/taskconstant.js');
+const { STATUS_CODES, MESSAGES, VALID_STATUSES } = require('../constants/task.constant.js');
 
 
 // Controller to create a new task

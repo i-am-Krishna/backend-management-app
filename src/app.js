@@ -3,8 +3,8 @@ const express = require("express"); // Importing Express framework
 const cors = require("cors"); // Importing CORS middleware
 const morgan = require("morgan"); // Importing HTTP request logger middleware
 const rateLimit = require("express-rate-limit"); // Importing rate limiting middleware
-const userRouter = require("./routes/userroutes.js"); // Importing user routes
-const taskRouter = require("./routes/taskroutes.js"); // Importing task routes
+const userRouter = require("./routes/user.routes.js"); // Importing user routes
+const taskRouter = require("./routes/task.routes.js"); // Importing task routes
 const cookieParser = require("cookie-parser"); // Importing cookie parser middleware
 
 // Creating an instance of the Express application

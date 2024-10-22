@@ -3,9 +3,9 @@ const express = require('express');
 // Creating a router instance for user-related routes
 const userRouter = express.Router();
 // Importing the user controller that contains the business logic
-const userController = require('../controllers/usercontroller.js');
+const userController = require('../controllers/user.controller.js');
 // Importing validation rules for user data
-const validation = require('../validators/uservalidators.js');
+const validation = require('../validators/user.validators.js');
 // Importing the authentication middleware to protect certain routes
 const { authentication } = require('../middlewares/authentication.js');
 

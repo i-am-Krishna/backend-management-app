@@ -1,9 +1,9 @@
-const UserModel = require("../models/usermodel.js");
+const UserModel = require("../models/user.model.js");
 const { validationResult } = require("express-validator");
 const { hashedPasswordFunction } = require("../middlewares/hashedPassword.js");
 const comparePassword = require("../middlewares/comparePassword.js");
 const { generateToken } = require("../tokens/token.js");
-const { STATUS_CODES, MESSAGES } = require("../constants/userconstant.js");
+const { STATUS_CODES, MESSAGES } = require("../constants/user.constant.js");
 
 // User signup controller
 const signup = async (req, res) => {

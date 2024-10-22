@@ -1,7 +1,7 @@
 // Importing required modules
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
-const { STATUS_CODES, MESSAGES } = require("../constants/userconstant.js");
+const { STATUS_CODES, MESSAGES } = require("../constants/user.constant.js");
 
 // Load environment variables from .env file
 dotenv.config();
