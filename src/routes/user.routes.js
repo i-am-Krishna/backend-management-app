@@ -9,13 +9,12 @@ const validation = require('../validators/user.validators.js');
 // Importing the authentication middleware to protect certain routes
 const { authentication } = require('../middlewares/authentication.js');
 
-userRouter.get('/hello', userController.heelo);
 
-    // Route for user login with validation rules applied
-    userRouter.post('/login', validation.loginValidationRules, userController.login);
+// Route for user login with validation rules applied
+userRouter.post('/login', validation.loginValidationRules, userController.login);
 
-    // Route for user signup with validation rules applied
-    userRouter.post('/signup', validation.signupValidationRules, userController.signup); 
+// Route for user signup with validation rules applied
+userRouter.post('/signup', validation.signupValidationRules, userController.signup);
 
 // Route to get all users; protected by authentication middleware
 userRouter.get('/', authentication, userController.getAllUsers);

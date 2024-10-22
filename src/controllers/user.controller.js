@@ -7,10 +7,6 @@ const { STATUS_CODES, MESSAGES } = require("../constants/user.constant.js");
 
 
 
-const heelo = (req, res) => {
-
-    res.send("hello")   
-}
 // User signup controller
 const signup = async (req, res) => {
     try {
@@ -158,6 +154,5 @@ module.exports = {
     getUserById,
     editUserById,
     getAllUsers,
-    logout,
-    heelo
+    logout
 };

@@ -20,7 +20,7 @@ const limiter = rateLimit({
 
 // Applying middlewares
 
-app.use(limiter); // Apply rate limiting middleware
+//app.use(limiter); // Apply rate limiting middleware
 app.use(cors()); // Enable CORS for all routes
 app.use(express.json()); // Parse incoming JSON requests
 app.use(express.urlencoded({ extended: true })); // Parse incoming requests with URL-encoded payloads
