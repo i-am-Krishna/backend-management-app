@@ -3,8 +3,8 @@ const express = require("express"); // Importing Express framework
 const cors = require("cors"); // Importing CORS middleware
 const morgan = require("morgan"); // Importing HTTP request logger middleware
 const rateLimit = require("express-rate-limit"); // Importing rate limiting middleware
-const userRouter = require("./routes/user.routes.js"); // Importing user routes
-const taskRouter = require("./routes/task.routes.js"); // Importing task routes
+const userRouter = require("./routes/userroutes.js"); // Importing user routes
+const taskRouter = require("./routes/taskroutes.js"); // Importing task routes
 const cookieParser = require("cookie-parser"); // Importing cookie parser middleware
 
 // Creating an instance of the Express application
@@ -31,7 +31,7 @@ app.use(cookieParser()); // Parse cookies in incoming requests
 app.use("/api/v1/user", userRouter); // Routes for user-related actions
 app.use("/api/v1/task", taskRouter); // Routes for task-related actions
 app.get("/hello", (req, res) => { // Default route for the application 
-  res.status(200).json({ message: "Welcome to the Backend Management App API" }); 
+  res.status(200).json({ message: "Welcome to the Backend Management App API" });
 });
 // Handling 404 errors (Route not found)
 // app.use((req, res, next) => {

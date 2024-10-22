@@ -1,10 +1,10 @@
 
 const { validationResult } = require('express-validator');
-const TaskModel = require('../models/task.model.js');
-const UserModel = require('../models/user.model.js');
+const TaskModel = require('../models/taskmodel.js');
+const UserModel = require('../models/usermodel.js');
 const { formatDueDate } = require('../helpers/formatDueDate.js');
 const { getDateFilterRange } = require('../helpers/filterDates.js');
-const { STATUS_CODES, MESSAGES, VALID_STATUSES } = require('../constants/task.constant.js');
+const { STATUS_CODES, MESSAGES, VALID_STATUSES } = require('../constants/taskconstant.js');
 
 
 // Controller to create a new task
@@ -30,7 +30,7 @@ const addTask = async (req, res) => {
     if (assignedUserId && assignedUserId !== id.toString()) {
       const assignedUser = await UserModel.findById(assignedUserId);
       if (!assignedUser) {
-        return res.status(STATUS_CODES.NOT_FOUND).json({ message: MESSAGES.ASSIGNED_USER_NOT_FOUND});
+        return res.status(STATUS_CODES.NOT_FOUND).json({ message: MESSAGES.ASSIGNED_USER_NOT_FOUND });
       }
       newTask.userIds.push(assignedUserId);
     }
@@ -237,7 +237,7 @@ const deleteTask = async (req, res) => {
 
     // Check if the task was found and deleted
     if (!deletedTask) {
-      return res.status(STATUS_CODES.NOT_FOUND).json({ message:  MESSAGES.TASK_NOT_FOUND });
+      return res.status(STATUS_CODES.NOT_FOUND).json({ message: MESSAGES.TASK_NOT_FOUND });
     }
 
     return res.status(STATUS_CODES.SUCCESS).json({ message: MESSAGES.TASK_DELETED, task: deletedTask });

@@ -1,7 +1,7 @@
 // Importing Mongoose to create the schema and model
 const mongoose = require("mongoose");
 // Importing constants for valid task statuses and priorities
-const { VALID_STATUSES, VALID_PRIORITIES } = require("../constants/task.constant");
+const { VALID_STATUSES, VALID_PRIORITIES } = require("../constants/taskconstant");
 
 // Defining the task schema
 const taskSchema = new mongoose.Schema({

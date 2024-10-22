@@ -1,9 +1,9 @@
-const UserModel = require("../models/user.model.js");
-const { validationResult } = require("express-validator");  
+const UserModel = require("../models/usermodel.js");
+const { validationResult } = require("express-validator");
 const { hashedPasswordFunction } = require("../middlewares/hashedPassword.js");
 const comparePassword = require("../middlewares/comparePassword.js");
 const { generateToken } = require("../tokens/token.js");
-const { STATUS_CODES, MESSAGES } = require("../constants/user.constant.js"); 
+const { STATUS_CODES, MESSAGES } = require("../constants/userconstant.js");
 
 // User signup controller
 const signup = async (req, res) => {
@@ -13,22 +13,22 @@ const signup = async (req, res) => {
         if (!errors.isEmpty()) {
             return res.status(STATUS_CODES.BAD_REQUEST).json({ errors: errors.array() });
         }
-  
+
         const { name, email, password } = req.body;
         // Ensure all fields are provided
         if (!name || !email || !password) {
             return res.status(STATUS_CODES.BAD_REQUEST).send({ error: MESSAGES.ALL_FIELDS_REQUIRED });
         }
-  
+
         // Check if user already exists
         const exists = await UserModel.findOne({ email });
         if (exists) {
             return res.status(STATUS_CODES.BAD_REQUEST).send({ error: MESSAGES.USER_EXISTS });
         }
-  
+
         // Hash the password before saving
         const hashedPassword = await hashedPasswordFunction(password);
-  
+
         // Create a new user and save to database
         const user = new UserModel({ name, email, password: hashedPassword });
         await user.save();
@@ -41,7 +41,7 @@ const signup = async (req, res) => {
 
 // User login controller
 const login = async (req, res) => {
-    try {            
+    try {
         // Validate request inputs
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -54,16 +54,16 @@ const login = async (req, res) => {
         if (user) {
             // Compare provided password with stored password
             const isPasswordMatch = await comparePassword(password, user.password);
-            if (!isPasswordMatch) return res.status(STATUS_CODES.BAD_REQUEST).send({ error: MESSAGES.INVALID_PASSWORD }); 
-            
+            if (!isPasswordMatch) return res.status(STATUS_CODES.BAD_REQUEST).send({ error: MESSAGES.INVALID_PASSWORD });
+
             // Generate and set authentication token as a cookie
-            const token = await generateToken(user._id);            
+            const token = await generateToken(user._id);
             res.cookie('authToken', token, {
                 httpOnly: true,
                 maxAge: 24 * 60 * 60 * 1000 // Cookie expires in 1 day
             });
             user = { ...user._doc, password: undefined }; // Remove password from user object
-            res.status(STATUS_CODES.SUCCESS).json({ user, message: MESSAGES.LOGIN_SUCCESS });  
+            res.status(STATUS_CODES.SUCCESS).json({ user, message: MESSAGES.LOGIN_SUCCESS });
         } else {
             return res.status(STATUS_CODES.NOT_FOUND).send({ error: MESSAGES.USER_NOT_FOUND });
         }
@@ -81,7 +81,7 @@ const getUserById = async (req, res) => {
         const user = await UserModel.findById(id).select('-password');
         if (!user) {
             return res.status(STATUS_CODES.NOT_FOUND).send({ error: MESSAGES.USER_NOT_FOUND });
-        }  
+        }
         res.status(STATUS_CODES.SUCCESS).send({ message: MESSAGES.USER_FOUND, user });
     } catch (error) {
         // Handle server error
@@ -90,11 +90,11 @@ const getUserById = async (req, res) => {
 };
 
 // Edit user details by ID controller
-const editUserById = async (req, res) => {      
-    try {            
+const editUserById = async (req, res) => {
+    try {
         const { name, email, password, new_password } = req.body;
         const id = req.user; // Get user ID from the authenticated user
-        const user = await UserModel.findById(id);  
+        const user = await UserModel.findById(id);
         if (!user) {
             return res.status(STATUS_CODES.NOT_FOUND).send({ error: MESSAGES.USER_NOT_FOUND });
         }
@@ -116,7 +116,7 @@ const editUserById = async (req, res) => {
     } catch (error) {
         // Handle server error
         res.status(STATUS_CODES.SERVER_ERROR).send({ error: error.message });
-    }  
+    }
 };
 
 // Get all users controller
@@ -126,12 +126,12 @@ const getAllUsers = async (req, res) => {
         const users = await UserModel.find().select('email _id');
         if (!users) {
             return res.status(STATUS_CODES.NOT_FOUND).send({ error: MESSAGES.USER_NOT_FOUND });
-        } 
+        }
         res.status(STATUS_CODES.SUCCESS).json({ users, message: MESSAGES.USERS_RETRIEVED });
     } catch (error) {
         // Handle server error
         res.status(STATUS_CODES.SERVER_ERROR).send({ error: error.message });
-    }           
+    }
 };
 
 // User logout controller
@@ -143,14 +143,14 @@ const logout = (req, res) => {
         // Handle server error
         res.status(STATUS_CODES.SERVER_ERROR).send({ error: error.message });
     }
-};        
+};
 
 // Export user controller methods
 module.exports = {
     signup,
     login,
-    getUserById, 
-    editUserById, 
-    getAllUsers, 
+    getUserById,
+    editUserById,
+    getAllUsers,
     logout
 };
