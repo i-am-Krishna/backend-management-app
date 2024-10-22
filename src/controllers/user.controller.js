@@ -139,8 +139,8 @@ const getAllUsers = async (req, res) => {
 // User logout controller
 const logout = (req, res) => {
     try {
-        res.clearCookie('authToken'); // Clear authentication token
-        res.status(STATUS_CODES.SUCCESS).send({ message: MESSAGES.LOGOUT_SUCCESS });
+        res.status(STATUS_CODES.SUCCESS).clearCookie('authToken').send({ message: MESSAGES.LOGOUT_SUCCESS });
+         // Clear authentication token
     } catch (error) {
         // Handle server error
         res.status(STATUS_CODES.SERVER_ERROR).send({ error: error.message });

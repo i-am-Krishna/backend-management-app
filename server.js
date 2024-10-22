@@ -24,6 +24,7 @@ app.get('/test-db-connection', async (req, res) => {
     }
 });
 
+
 // Starting the server and connecting to the database
 app.listen(port, async () => {
     try {
