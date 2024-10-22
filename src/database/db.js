@@ -6,7 +6,10 @@ const mongoose = require("mongoose");
 const connectDB = async () => {
     try {
         // Attempt to connect to the MongoDB database using the connection string from environment variables
-        const conn = await mongoose.connect(`${process.env.MONGO_DB_URL}/${process.env.DATABASE_NAME}`); 
+        const conn = await mongoose.connect(`${process.env.MONGO_DB_URL}`, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+          }); 
         
         // Log the host of the connected MongoDB instance
         console.log(`MongoDB connected: ${conn.connection.host}`);

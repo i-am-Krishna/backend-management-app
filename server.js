@@ -21,6 +21,6 @@ app.listen(port, async () => {
         console.log('MongoDB connected'); // Logging success message if connected
     } catch (error) {
         console.log(`Error: ${error.message}`); // Logging any connection error
-    }            
+    }
     console.log(`Backend Management App listening on port ${port}!`); // Logging that the server is running
 });
