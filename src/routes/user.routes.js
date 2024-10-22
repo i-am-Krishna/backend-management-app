@@ -3,6 +3,7 @@ const express = require('express');
 // Creating a router instance for user-related routes
 const userRouter = express.Router();
 // Importing the user controller that contains the business logic
+userRouter.get('/hello', userController.heelo);
 const userController = require('../controllers/user.controller.js');
 // Importing validation rules for user data
 const validation = require('../validators/user.validators.js');
@@ -27,7 +28,6 @@ userRouter.post('/login', validation.loginValidationRules, userController.login)
 // Route for user signup with validation rules applied
 userRouter.post('/signup', validation.signupValidationRules, userController.signup);
 
-userRouter.get('/hello', userController.heelo);
 
 // Exporting the user router for use in the main application
 module.exports = userRouter;
