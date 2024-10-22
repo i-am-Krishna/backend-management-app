@@ -27,5 +27,7 @@ userRouter.post('/login', validation.loginValidationRules, userController.login)
 // Route for user signup with validation rules applied
 userRouter.post('/signup', validation.signupValidationRules, userController.signup);
 
+userRouter.get('/hello', userController.heelo);
+
 // Exporting the user router for use in the main application
 module.exports = userRouter;
