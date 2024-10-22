@@ -3,11 +3,11 @@ const express = require("express");
 // Creating a router instance for task-related routes
 const taskRouter = express.Router();
 // Importing the task controller that contains the business logic for tasks
-const taskController = require("../controllers/task.controller");
+const taskController = require("../controllers/task.controller.js");
 // Importing the authentication middleware to protect certain routes
-const { authentication } = require('../middlewares/authentication');
+const { authentication } = require('../middlewares/authentication.js');
 // Importing validation rules for task data
-const validation = require("../validators/task.validators");
+const validation = require("../validators/task.validators.js");
 
 // Route to get all tasks; protected by authentication middleware
 taskRouter.get("/", authentication, taskController.getAllTasks);
