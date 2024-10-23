@@ -19,8 +19,7 @@ const limiter = rateLimit({
 });
 
 // Applying middlewares
-
-//app.use(limiter); // Apply rate limiting middleware
+app.use(limiter); // Apply rate limiting middleware
 app.use(cors()); // Enable CORS for all routes
 app.use(express.json()); // Parse incoming JSON requests
 app.use(express.urlencoded({ extended: true })); // Parse incoming requests with URL-encoded payloads
@@ -31,11 +30,16 @@ app.use(cookieParser()); // Parse cookies in incoming requests
 app.use("/api/v1/user", userRouter); // Routes for user-related actions
 app.use("/api/v1/task", taskRouter); // Routes for task-related actions
 
-
 // Handling 404 errors (Route not found)
-// app.use((req, res, next) => {
-//   res.status(404).json({ error: 'Route not exists' }); // Respond with a 404 error if no routes match
-// });
+app.use((req, res, next) => {
+    res.status(404).json({ error: 'Route not exists' }); // Respond with a 404 error if no routes match
+});
+
+// Generic error handler
+app.use((err, req, res, next) => {
+    console.error(err.stack); // Log the error stack for debugging
+    res.status(500).json({ error: 'Something went wrong!' }); // Respond with a generic error message
+});
 
 // Exporting the app for use in other files
-module.exports = app; 
+module.exports = app;

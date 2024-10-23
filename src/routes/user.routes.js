@@ -9,7 +9,6 @@ const validation = require('../validators/user.validators.js');
 // Importing the authentication middleware to protect certain routes
 const { authentication } = require('../middlewares/authentication.js');
 
-
 // Route for user login with validation rules applied
 userRouter.post('/login', validation.loginValidationRules, userController.login);
 
@@ -27,6 +26,9 @@ userRouter.patch('/:id', authentication, userController.editUserById);
 
 // Route for user logout; protected by authentication middleware
 userRouter.post('/logout', authentication, userController.logout);
+
+
+userRouter.get('/check-auth', authentication, userController.isAuthenticated);
 
 
 // Exporting the user router for use in the main application

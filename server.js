@@ -2,7 +2,7 @@
 const app = require("./src/app.js"); // Importing the Express app instance
 const dotenv = require("dotenv"); // Importing dotenv for environment variable management
 const connectDB = require("./src/database/db.js"); // Importing the database connection module
-const { default: mongoose } = require("mongoose");
+const mongoose = require("mongoose"); // Importing mongoose
 
 // Loading environment variables from .env file
 dotenv.config();
@@ -15,8 +15,14 @@ app.get("/", (req, res) => {
     res.send("Hello World!"); // Responding with a simple message
 });
 
+// Test route for database connection
 app.get('/test-db-connection', async (req, res) => {
     try {
+        // Check if already connected to avoid multiple connections
+        if (mongoose.connection.readyState === 1) {
+            return res.send("Already connected to MongoDB!");
+        }
+        
         await mongoose.connect(process.env.MONGO_DB_URL, { useNewUrlParser: true, useUnifiedTopology: true });
         res.send("Connected to MongoDB!");
     } catch (error) {
@@ -24,14 +30,19 @@ app.get('/test-db-connection', async (req, res) => {
     }
 });
 
-
 // Starting the server and connecting to the database
-app.listen(port, async () => {
+const startServer = async () => {
     try {
         await connectDB(); // Attempting to connect to the database
         console.log('MongoDB connected'); // Logging success message if connected
+        
+        app.listen(port, () => {
+            console.log(`Backend Management App listening on port ${port}!`); // Logging that the server is running
+        });
     } catch (error) {
         console.log(`Error: ${error.message}`); // Logging any connection error
+        process.exit(1); // Exit the process if the connection fails
     }
-    console.log(`Backend Management App listening on port ${port}!`); // Logging that the server is running
-});
+};
+
+startServer(); // Start the server

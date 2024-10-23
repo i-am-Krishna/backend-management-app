@@ -147,6 +147,25 @@ const logout = (req, res) => {
     }
 };
 
+
+
+const isAuthenticated = (req, res) => {
+    const token = req.cookies["authToken"];
+    try {
+        if (token) {
+          // Validate the token (mock logic for validation)
+          return res.status(200).json({ authenticated: true })
+        }
+        
+    } catch (error) {
+        return res.status(401).json({ authenticated: false })
+    }
+  }
+
+
+
+
+
 // Export user controller methods
 module.exports = {
     signup,
@@ -154,5 +173,6 @@ module.exports = {
     getUserById,
     editUserById,
     getAllUsers,
-    logout
+    logout,
+    isAuthenticated
 };
