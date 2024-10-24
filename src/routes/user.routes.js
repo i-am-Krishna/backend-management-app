@@ -28,7 +28,7 @@ userRouter.patch('/:id', authentication, userController.editUserById);
 userRouter.post('/logout', authentication, userController.logout);
 
 
-userRouter.get('/check-auth', authentication, userController.isAuthenticated);
+userRouter.get('/check-auth', userController.isAuthenticated);
 
 
 // Exporting the user router for use in the main application

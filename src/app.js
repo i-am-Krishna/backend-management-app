@@ -6,6 +6,12 @@ const rateLimit = require("express-rate-limit"); // Importing rate limiting midd
 const userRouter = require("./routes/user.routes.js"); // Importing user routes
 const taskRouter = require("./routes/task.routes.js"); // Importing task routes
 const cookieParser = require("cookie-parser"); // Importing cookie parser middleware
+const mongoose = require("mongoose"); // Importing mongoose
+const dotenv = require("dotenv"); // Importing dotenv for environment variable management
+
+dotenv.config();
+
+
 
 // Creating an instance of the Express application
 const app = express();
@@ -25,6 +31,34 @@ app.use(express.json()); // Parse incoming JSON requests
 app.use(express.urlencoded({ extended: true })); // Parse incoming requests with URL-encoded payloads
 app.use(morgan("dev")); // Log HTTP requests in 'dev' format
 app.use(cookieParser()); // Parse cookies in incoming requests
+
+
+// Setting up a basic route for the root URL
+app.get("/", (req, res) => {
+  try {
+    res.status(200).send({message:"Hello World!"}); // Responding with a simple message
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+});
+
+// Test route for database connection
+app.get('/test-db-connection', async (req, res) => {
+  try {
+      // Check if already connected to avoid multiple connections
+      if (mongoose.connection.readyState === 1) {
+          return res.status(200).json({message:"Already connected to MongoDB!"});
+      }
+      
+      await mongoose.connect(process.env.MONGO_DB_URL, { useNewUrlParser: true, useUnifiedTopology: true });
+      res.send("Connected to MongoDB!");
+  } catch (error) {
+      res.status(500).send(`Database connection failed: ${error.message}`);
+  }
+});
+
+
+
 
 // Setting up route prefixes
 app.use("/api/v1/user", userRouter); // Routes for user-related actions
