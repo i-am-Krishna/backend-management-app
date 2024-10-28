@@ -1,20 +1,24 @@
 // Importing necessary modules
 const express = require("express"); // Importing Express framework
+const mongoose = require("mongoose"); // Importing mongoose
 const cors = require("cors"); // Importing CORS middleware
 const morgan = require("morgan"); // Importing HTTP request logger middleware
-const rateLimit = require("express-rate-limit"); // Importing rate limiting middleware
-const userRouter = require("./routes/user.routes.js"); // Importing user routes
-const taskRouter = require("./routes/task.routes.js"); // Importing task routes
-const cookieParser = require("cookie-parser"); // Importing cookie parser middleware
-const mongoose = require("mongoose"); // Importing mongoose
 const dotenv = require("dotenv"); // Importing dotenv for environment variable management
+const cookieParser = require("cookie-parser"); // Importing cookie parser middleware
+const rateLimit = require("express-rate-limit"); // Importing rate limiting middleware
 
 dotenv.config();
 
 
+const userRouter = require("./routes/user.routes.js"); // Importing user routes
+const taskRouter = require("./routes/task.routes.js"); // Importing task routes
+
 
 // Creating an instance of the Express application
 const app = express();
+
+
+
 
 // Setting up rate limiting
 const limiter = rateLimit({
@@ -23,12 +27,19 @@ const limiter = rateLimit({
   standardHeaders: true, // Send rate limit info in the 'RateLimit-*' headers
   legacyHeaders: false, // Disable the 'X-RateLimit-*' headers
 });
-app.use(cors({
-  origin: process.env.FRONTEND_URL,
-  credentials: true, // Allows credentials (cookies) to be sent
-}));
 
 app.use(limiter);
+
+
+const corsOptions = {
+  origin: process.env.NODE_ENV === "production" ? process.env.FRONTEND_PROD_URL : process.env.FRONTEND_URL,
+  credentials: true,
+  allowedHeaders: ["Content-Type", "Authorization"],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+};
+
+app.use(cors(corsOptions));
+
 
 // console.log(process.env.COOKIE_SECRET);
 app.use(cookieParser()); // Initialize cookie-parser with a secret key
