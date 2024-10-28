@@ -35,12 +35,13 @@ const corsOptions = {
   origin: process.env.NODE_ENV === "production" ? process.env.FRONTEND_PROD_URL : process.env.FRONTEND_URL,
   // origin: process.env.FRONTEND_URL,
   credentials: true,
-  allowedHeaders: ["Content-Type", "Authorization"],
+  allowedHeaders: ["Content-Type", "Authorization", "Accept", "x-csrf-token", "X-Requested-With"],
   methods: ["GET", "POST", "PATCH", "PUT", "DELETE","OPTIONS"],
 };
 
 app.use(cors(corsOptions));
 
+app.options("*", cors(corsOptions)); // Handle preflight requests
 
 // console.log(process.env.COOKIE_SECRET);
 app.use(cookieParser()); // Initialize cookie-parser with a secret key
