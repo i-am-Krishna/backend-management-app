@@ -10,7 +10,6 @@ dotenv.config();
 const authentication = (req, res, next) => {
     // Retrieve the token from cookies
     const authHeader = req.cookies["authToken"];
-
     // Check if the token is missing; if so, respond with unauthorized status
     if (authHeader == null) {
         return res.status(STATUS_CODES.UNAUTHORIZED).send({ message: MESSAGES.LOGIN_FIRST });

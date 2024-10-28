@@ -34,7 +34,8 @@ const signup = async (req, res) => {
         // Create a new user and save to database
         const user = new UserModel({ name, email, password: hashedPassword });
         await user.save();
-        res.status(STATUS_CODES.CREATED).json({ message: MESSAGES.USER_CREATED, user });
+        let newuser = { ...user._doc, password: undefined }; 
+        res.status(STATUS_CODES.CREATED).json({ message: MESSAGES.USER_CREATED, user:newuser });
     } catch (error) {
         // Handle server error
         res.status(STATUS_CODES.SERVER_ERROR).send({ error: error.message });
@@ -57,15 +58,14 @@ const login = async (req, res) => {
             // Compare provided password with stored password
             const isPasswordMatch = await comparePassword(password, user.password);
             if (!isPasswordMatch) return res.status(STATUS_CODES.BAD_REQUEST).send({ error: MESSAGES.INVALID_PASSWORD });
-
+            console.log(user, "user")
             // Generate and set authentication token as a cookie
             const token = await generateToken(user._id);
-            res.cookie('authToken', token, {
-                httpOnly: true,
-                maxAge: 24 * 60 * 60 * 1000 // Cookie expires in 1 day
+            res.cookie('authToken', token, { httpOnly: true, maxAge: 86400000
             });
+
             user = { ...user._doc, password: undefined }; // Remove password from user object
-            res.status(STATUS_CODES.SUCCESS).json({ user, message: MESSAGES.LOGIN_SUCCESS });
+            res.status(STATUS_CODES.SUCCESS).json({ user, message: MESSAGES.LOGIN_SUCCESS ,token});
         } else {
             return res.status(STATUS_CODES.NOT_FOUND).send({ error: MESSAGES.USER_NOT_FOUND });
         }
@@ -151,16 +151,11 @@ const logout = (req, res) => {
 
 const isAuthenticated = (req, res) => {
     const token = req.cookies["authToken"];
-    try {
         if (token) {
-          // Validate the token (mock logic for validation)
           return res.status(200).json({ authenticated: true })
         }
-        
-    } catch (error) {
         return res.status(401).json({ authenticated: false })
     }
-  }
 
 
 

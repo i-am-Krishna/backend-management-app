@@ -1,17 +1,22 @@
-/**
- * Formats a given date into a readable string in 'en-GB' format.
- * @param {Date|string|null} date - The date to be formatted, can be a Date object, a date string, or null.
- * @returns {string|null} - Returns the formatted date string or null if the input date is invalid.
- */
 const formatDueDate = (date) => {
   // If the date is null or undefined, return null
   if (!date) return null;
 
-  // Create a new Date object from the input and format it to 'en-GB' style
-  return new Date(date).toLocaleDateString('en-GB', {
-    day: 'numeric',  // Display the day as a number
-    month: 'short',  // Display the month as a short string (e.g., 'Jan', 'Feb')
-  });
+  const dateObj = new Date(date);
+
+  const day = dateObj.getDate();
+  const month = dateObj.toLocaleString('en-GB', { month: 'short' });
+
+  // Determine the appropriate suffix for the day
+  const suffix = (day) => {
+    if (day % 10 === 1 && day !== 11) return "st";
+    if (day % 10 === 2 && day !== 12) return "nd";
+    if (day % 10 === 3 && day !== 13) return "rd";
+    return "th";
+  };
+
+  // Return the formatted date with day, suffix, and month
+  return `${month} ${day}${suffix(day)}`;
 };
 
 // Exporting the function for use in other parts of the application

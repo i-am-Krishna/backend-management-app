@@ -5,6 +5,8 @@ const UserModel = require('../models/user.model.js');
 const { formatDueDate } = require('../helpers/formatDueDate.js');
 const { getDateFilterRange } = require('../helpers/filterDates.js');
 const { STATUS_CODES, MESSAGES, VALID_STATUSES } = require('../constants/task.constant.js');
+const mongoose = require('mongoose');
+
 
 
 // Controller to create a new task
@@ -52,7 +54,7 @@ const getAllTasks = async (req, res) => {
 
     // Build the date filter to include tasks without a due date or those that match the date range
     const dateFilter = startDate && endDate
-      ? { $or: [{ dueDate: { $gte: startDate, $lte: endDate } }, { dueDate: null }] }
+      ? { $or: [{ dueDate: { $gte: startDate } }, { dueDate: null }] }
       : {};
 
     // Find tasks where the user is either the owner or is assigned to the task, with optional date filtering
@@ -99,9 +101,10 @@ const getTaskById = async (req, res) => {
     if (!task) {
       return res.status(STATUS_CODES.NOT_FOUND).json({ message: MESSAGES.TASK_NOT_FOUND });
     }
-
+    const formattedDueDate = formatDueDate(task.dueDate);
+    // Format the dueDate before sending the response
     // Return the retrieved task
-    return res.status(STATUS_CODES.SUCCESS).json({ message: MESSAGES.TASK_RETRIEVED, task });
+    return res.status(STATUS_CODES.SUCCESS).json({ message: MESSAGES.TASK_RETRIEVED, task: { ...task._doc, dueDate: formattedDueDate } });
   } catch (error) {
     // Handle any errors during task retrieval
     return res.status(STATUS_CODES.SERVER_ERROR).json({ message: MESSAGES.SERVER_ERROR, error: error.message });
@@ -160,7 +163,7 @@ const getTaskCounts = async (req, res) => {
         backlog: 0,
         todo: 0,
         inprogress: 0,
-        completed: 0,
+        done: 0,
       },
       priority: {
         lowpriority: 0,
@@ -299,7 +302,6 @@ const updateTask = async (req, res) => {
 
     const { taskId } = req.params;
     const { title, checklist, priority, assignedUserId, dueDate } = req.body;
-
     // Find the task by its ID
     const task = await TaskModel.findById(taskId);
     if (!task) {
@@ -309,27 +311,32 @@ const updateTask = async (req, res) => {
     // Update mandatory fields
     task.title = title;
     task.priority = priority;
-
     // Merge checklist items: update existing ones or add new ones
     checklist.forEach(newItem => {
       if (newItem._id) {
         // If the checklist item has an ID, update the existing item
         const existingItem = task.checklist.find(item => item._id.toString() === newItem._id);
         if (existingItem) {
+
           existingItem.subtask = newItem.subtask || existingItem.subtask;
           existingItem.done = newItem.done !== undefined ? newItem.done : existingItem.done;
         }
-      } else {
-        // If the checklist item doesn't have an ID, add it as a new item
-        task.checklist.push(newItem);
+        else{
+          const newChecklistItem = {
+            _id: new mongoose.Types.ObjectId(),
+            subtask: newItem.subtask,
+            done: newItem.done || false, // Default to false if not specified
+          };
+          task.checklist.push(newChecklistItem);
+        }
+      } else  {
+        // If the checklist item doesn't have a
       }
     });
-
     // Update optional fields if they are provided
     if (dueDate) {
       task.dueDate = dueDate;
     }
-
     // If an assigned user is provided and it's different from the owner, add them to the userIds array
     if (assignedUserId && !task.userIds.includes(assignedUserId)) {
       const assignedUser = await UserModel.findById(assignedUserId);

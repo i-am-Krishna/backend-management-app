@@ -16,12 +16,6 @@ const validateTask = [
       // Check if each item in the checklist has a 'subtask' property of type string
       return value.every(subtask => subtask.subtask && typeof subtask.subtask === 'string');
     }).withMessage('Each checklist item must have a subtask property of type string'),
-  
-  // Validate 'dueDate' field
-  body('dueDate')
-    .optional() // This field is optional
-    .isISO8601().withMessage('Due date must be a valid date'), // Ensure due date is in ISO 8601 format
-
   // Validate 'status' field
   body('status')
     .optional() // This field is optional

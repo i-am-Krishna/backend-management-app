@@ -22,7 +22,7 @@ taskRouter.get("/:id", taskController.getTaskById);
 taskRouter.post("/", authentication, validation.validateTask, taskController.addTask);
 
 // Route to assign all tasks to a specific user by ID; protected by authentication
-taskRouter.post('/assign-all/:id', authentication, taskController.assignAllTasks);
+taskRouter.post('/assign/:id', authentication, taskController.assignAllTasks);
 
 // Route to update the status of a specific task by ID; protected by authentication
 taskRouter.patch("/:id", authentication, taskController.updateTaskStatus);

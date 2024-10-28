@@ -23,14 +23,20 @@ const limiter = rateLimit({
   standardHeaders: true, // Send rate limit info in the 'RateLimit-*' headers
   legacyHeaders: false, // Disable the 'X-RateLimit-*' headers
 });
+app.use(cors({
+  origin: process.env.FRONTEND_URL,
+  credentials: true, // Allows credentials (cookies) to be sent
+}));
 
-// Applying middlewares
-app.use(limiter); // Apply rate limiting middleware
-app.use(cors()); // Enable CORS for all routes
+app.use(limiter);
+
+// console.log(process.env.COOKIE_SECRET);
+app.use(cookieParser()); // Initialize cookie-parser with a secret key
+
 app.use(express.json()); // Parse incoming JSON requests
 app.use(express.urlencoded({ extended: true })); // Parse incoming requests with URL-encoded payloads
+
 app.use(morgan("dev")); // Log HTTP requests in 'dev' format
-app.use(cookieParser()); // Parse cookies in incoming requests
 
 
 // Setting up a basic route for the root URL
@@ -56,8 +62,6 @@ app.get('/test-db-connection', async (req, res) => {
       res.status(500).send(`Database connection failed: ${error.message}`);
   }
 });
-
-
 
 
 // Setting up route prefixes
