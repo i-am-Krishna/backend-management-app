@@ -61,8 +61,17 @@ const login = async (req, res) => {
             console.log(user, "user")
             // Generate and set authentication token as a cookie
             const token = await generateToken(user._id);
-            res.cookie('authToken', token, { httpOnly: true, maxAge: 86400000
-            });
+
+            res.cookie("authToken", token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production", // Use secure cookies in production
+                sameSite: "None", // Allows cross-site cookie usage
+                maxAge: 24 * 60 * 60 * 1000, // 1 day
+              });
+              
+
+            // res.cookie('authToken', token, { httpOnly: true, maxAge: 86400000
+            // });
 
             user = { ...user._doc, password: undefined }; // Remove password from user object
             res.status(STATUS_CODES.SUCCESS).json({ user, message: MESSAGES.LOGIN_SUCCESS ,token});
