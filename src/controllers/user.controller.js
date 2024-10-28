@@ -149,8 +149,8 @@ const logout = (req, res) => {
 
 
 
-const isAuthenticated = (req, res) => {
-    const token = req.cookies["authToken"];
+const isAuthenticated = async (req, res) => {
+    const token = await req.cookies["authToken"];
         if (token) {
           return res.status(200).json({ authenticated: true })
         }
