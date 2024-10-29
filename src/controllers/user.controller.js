@@ -58,23 +58,26 @@ const login = async (req, res) => {
             // Compare provided password with stored password
             const isPasswordMatch = await comparePassword(password, user.password);
             if (!isPasswordMatch) return res.status(STATUS_CODES.BAD_REQUEST).send({ error: MESSAGES.INVALID_PASSWORD });
-            console.log(user, "user")
             // Generate and set authentication token as a cookie
             const token = await generateToken(user._id);
 
+
+        ////  For production
             res.cookie("authToken", token, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === "production", // Use secure cookies in production
-                // sameSite: "None", // Allows cross-site cookie usage
+                sameSite: "None", // Allows cross-site cookie usage
                 maxAge: 24 * 60 * 60 * 1000, // 1 day
               });
               
 
+
+            //  for development
             // res.cookie('authToken', token, { httpOnly: true, maxAge: 86400000
             // });
 
             user = { ...user._doc, password: undefined }; // Remove password from user object
-            res.status(STATUS_CODES.SUCCESS).json({ user, message: MESSAGES.LOGIN_SUCCESS ,token});
+            res.status(STATUS_CODES.SUCCESS).json({ user, message: MESSAGES.LOGIN_SUCCESS});
         } else {
             return res.status(STATUS_CODES.NOT_FOUND).send({ error: MESSAGES.USER_NOT_FOUND });
         }
