@@ -151,10 +151,9 @@ const getAllUsers = async (req, res) => {
 // User logout controller
 const logout = (req, res) => {
     try {
-        res.status(STATUS_CODES.SUCCESS).clearCookie('authToken', { path: '/' }).send({ message: MESSAGES.LOGOUT_SUCCESS });
-         // Clear authentication token
+        res.cookie("authToken", "", { maxAge: 0 });
+        res.status(STATUS_CODES.SUCCESS).send({ message: MESSAGES.LOGOUT_SUCCESS });
     } catch (error) {
-        // Handle server error
         res.status(STATUS_CODES.SERVER_ERROR).send({ error: error.message });
     }
 };
@@ -162,11 +161,7 @@ const logout = (req, res) => {
 
 
 const isAuthenticated = async (req, res) => {
-    const token = await req.cookies["authToken"];
-        if (token) {
           return res.status(200).json({ authenticated: true })
-        }
-        return res.status(401).json({ authenticated: false })
     }
 
 
