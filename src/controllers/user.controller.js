@@ -151,14 +151,17 @@ const getAllUsers = async (req, res) => {
 // User logout controller
 const logout = (req, res) => {
     try {
-        res.cookie("authToken", "", { maxAge: 0 });
+        res.clearCookie("authToken", {
+            httpOnly: true,
+            secure: true,      // Use 'true' if your app is served over HTTPS
+            sameSite: "None",   // Allow cross-site cookies, required for Vercel
+            path: "/",          // Ensure it clears across all routes
+        });
         res.status(STATUS_CODES.SUCCESS).send({ message: MESSAGES.LOGOUT_SUCCESS });
     } catch (error) {
         res.status(STATUS_CODES.SERVER_ERROR).send({ error: error.message });
     }
 };
-
-
 
 const isAuthenticated = async (req, res) => {
           return res.status(200).json({ authenticated: true })
