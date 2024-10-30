@@ -59,7 +59,7 @@ const login = async (req, res) => {
             const isPasswordMatch = await comparePassword(password, user.password);
             if (!isPasswordMatch) return res.status(STATUS_CODES.BAD_REQUEST).send({ error: MESSAGES.INVALID_PASSWORD });
             // Generate and set authentication token as a cookie
-            const token = await generateToken(user._id);
+            const token = generateToken(user._id);
 
 
         ////  For production
@@ -151,7 +151,7 @@ const getAllUsers = async (req, res) => {
 // User logout controller
 const logout = (req, res) => {
     try {
-        res.status(STATUS_CODES.SUCCESS).clearCookie('authToken').send({ message: MESSAGES.LOGOUT_SUCCESS });
+        res.status(STATUS_CODES.SUCCESS).clearCookie('authToken', { path: '/' }).send({ message: MESSAGES.LOGOUT_SUCCESS });
          // Clear authentication token
     } catch (error) {
         // Handle server error
