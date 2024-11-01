@@ -151,6 +151,8 @@ const getAllUsers = async (req, res) => {
 // User logout controller
 const logout = (req, res) => {
     try {
+        // res.clearCookie("authToken"); // for local development
+
         res.clearCookie("authToken", {
             httpOnly: true,
             secure: true,      // Use 'true' if your app is served over HTTPS
