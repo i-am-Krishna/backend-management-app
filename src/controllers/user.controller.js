@@ -125,7 +125,12 @@ const editUserById = async (req, res) => {
         user.name = name || user.name;
         user.email = email || user.email;
         await user.save();
-        res.clearCookie('authToken'); // Clear existing token
+        res.clearCookie("authToken", {
+            httpOnly: true,
+            secure: true,      // Use 'true' if your app is served over HTTPS
+            sameSite: "None",   // Allow cross-site cookies, required for Vercel
+            path: "/",          // Ensure it clears across all routes
+        });
         res.status(STATUS_CODES.SUCCESS).send({ message: MESSAGES.USER_UPDATED, user });
     } catch (error) {
         // Handle server error
